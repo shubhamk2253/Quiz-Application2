@@ -11,7 +11,9 @@ except ImportError:
     OpenAI = None
 
 
-# ==================== PAGE CONFIG ====================
+# =====================================================
+# PAGE CONFIGURATION
+# =====================================================
 
 st.set_page_config(
     page_title="QuizQuest AI",
@@ -21,114 +23,247 @@ st.set_page_config(
 )
 
 
-# ==================== PREMIUM UI ====================
+# =====================================================
+# PREMIUM UI
+# =====================================================
 
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
+:root {
+    --bg: #080d1b;
+    --panel: #111b30;
+    --border: #344461;
+    --purple: #8b5cf6;
+    --cyan: #22d3ee;
+}
+
 .stApp {
     background:
-        radial-gradient(ellipse at 10% 0%, #25205b 0%, transparent 35%),
-        radial-gradient(ellipse at 90% 15%, #12354a 0%, transparent 30%),
-        #080d1b;
-    color: #f1f5ff;
+        radial-gradient(ellipse at 8% 0%, #25205b80, transparent 35%),
+        radial-gradient(ellipse at 95% 10%, #12354a80, transparent 30%),
+        var(--bg);
+    color: #f4f7ff;
     font-family: 'Inter', sans-serif;
 }
 
 .block-container {
-    max-width: 1150px;
+    max-width: 1180px;
     padding-top: 2rem;
     padding-bottom: 3rem;
 }
 
-h1, h2, h3 {
-    color: #f1f5ff !important;
-    font-weight: 750 !important;
-    letter-spacing: -0.5px;
+h1, h2, h3, h4, p {
+    color: #f4f7ff;
 }
 
+h1, h2, h3 {
+    font-weight: 800 !important;
+    letter-spacing: -0.4px;
+}
+
+/* Sidebar */
+
 [data-testid="stSidebar"] {
-    background: #0c1325;
-    border-right: 1px solid #26334d;
+    background: linear-gradient(180deg, #10192c, #090f1e);
+    border-right: 1px solid #293650;
 }
 
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 {
-    color: white !important;
+    color: #ffffff !important;
 }
 
-div[data-testid="stMetric"] {
-    background: linear-gradient(145deg, #151f37, #10182a);
-    border: 1px solid #26334d;
-    border-radius: 18px;
-    padding: 18px;
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] * {
+    color: #a9b7d0 !important;
 }
 
-[data-testid="stMetricLabel"] {
-    color: #9baac4 !important;
+/* Labels */
+
+[data-testid="stWidgetLabel"] *,
+[data-testid="stRadio"] > label,
+[data-testid="stSelectbox"] label,
+[data-testid="stTextInput"] label,
+[data-testid="stTextArea"] label,
+[data-testid="stSlider"] label {
+    color: #e7edff !important;
+    font-weight: 600 !important;
 }
 
-[data-testid="stMetricValue"] {
-    color: white !important;
-    font-weight: 800;
+/* Text input fields */
+
+.stTextInput input,
+.stTextArea textarea,
+[data-testid="stNumberInput"] input {
+    background: #111b30 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: 1px solid #344461 !important;
+    border-radius: 12px !important;
+    caret-color: #22d3ee !important;
 }
+
+.stTextInput input::placeholder,
+.stTextArea textarea::placeholder {
+    color: #94a3b8 !important;
+    -webkit-text-fill-color: #94a3b8 !important;
+}
+
+/* Select boxes */
+
+[data-testid="stSelectbox"] [data-baseweb="select"] > div,
+[data-testid="stMultiSelect"] [data-baseweb="select"] > div {
+    background: #111b30 !important;
+    color: #ffffff !important;
+    border-color: #344461 !important;
+    border-radius: 12px !important;
+}
+
+[data-testid="stSelectbox"] [data-baseweb="select"] *,
+[data-testid="stMultiSelect"] [data-baseweb="select"] * {
+    color: #ffffff !important;
+}
+
+/* Dropdown options: prevent black text */
+
+[data-baseweb="popover"],
+[data-baseweb="menu"],
+[data-baseweb="popover"] > div,
+[role="listbox"] {
+    background: #111b30 !important;
+    color: #ffffff !important;
+}
+
+[role="option"],
+[role="option"] *,
+[role="listbox"] *,
+[data-baseweb="menu"] * {
+    color: #ffffff !important;
+}
+
+[role="option"]:hover,
+[role="option"][aria-selected="true"] {
+    background: #293957 !important;
+}
+
+/* Quiz answer cards */
+
+[data-testid="stRadio"] [role="radiogroup"] {
+    gap: 10px;
+}
+
+[data-testid="stRadio"] [role="radiogroup"] label {
+    background: linear-gradient(145deg, #151f37, #10182a) !important;
+    border: 1px solid #344461 !important;
+    border-radius: 14px !important;
+    padding: 13px 16px !important;
+    color: #ffffff !important;
+    transition: all 0.2s ease;
+}
+
+[data-testid="stRadio"] [role="radiogroup"] label *,
+[data-testid="stRadio"] [role="radiogroup"] label p,
+[data-testid="stRadio"] [role="radiogroup"] label span {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+[data-testid="stRadio"] [role="radiogroup"] label:hover {
+    background: #202c47 !important;
+    border-color: #8b5cf6 !important;
+}
+
+[data-testid="stRadio"] input {
+    accent-color: #8b5cf6 !important;
+}
+
+/* Buttons */
 
 div.stButton > button,
 div.stFormSubmitButton > button,
 div[data-testid="stDownloadButton"] button {
-    border-radius: 12px;
-    min-height: 44px;
-    font-weight: 700;
-    border: 1px solid #6243cf;
-    background: linear-gradient(110deg, #7c3aed, #5b5bd6);
-    color: white;
-    transition: 0.2s ease;
+    min-height: 46px;
+    border: 1px solid #7657e8 !important;
+    border-radius: 13px !important;
+    background: linear-gradient(110deg, #7c3aed, #5b5bd6) !important;
+    color: #ffffff !important;
+    font-weight: 750 !important;
+    transition: all 0.2s ease;
+    box-shadow: 0 8px 22px #5b21b62a;
+}
+
+div.stButton > button *,
+div.stFormSubmitButton > button *,
+div[data-testid="stDownloadButton"] button * {
+    color: #ffffff !important;
 }
 
 div.stButton > button:hover,
 div.stFormSubmitButton > button:hover,
 div[data-testid="stDownloadButton"] button:hover {
-    border-color: #22d3ee;
-    transform: translateY(-1px);
-    box-shadow: 0 5px 20px #7c3aed35;
+    border-color: #22d3ee !important;
+    transform: translateY(-2px);
+    box-shadow: 0 9px 26px #7c3aed50;
 }
 
-.stTextInput input,
-.stTextArea textarea {
-    background: #10192c !important;
-    color: white !important;
-    border: 1px solid #33415e !important;
-    border-radius: 12px !important;
+/* Metric cards */
+
+div[data-testid="stMetric"] {
+    background: linear-gradient(145deg, #151f37, #10182a);
+    border: 1px solid #2a3855;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 8px 24px #00000020;
 }
+
+[data-testid="stMetricLabel"],
+[data-testid="stMetricLabel"] * {
+    color: #a9b7d0 !important;
+}
+
+[data-testid="stMetricValue"],
+[data-testid="stMetricValue"] * {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
+/* Progress bar */
 
 .stProgress > div > div > div > div {
     background: linear-gradient(90deg, #8b5cf6, #22d3ee);
 }
 
+/* Expanders */
+
 div[data-testid="stExpander"] {
     background: #10192b;
-    border: 1px solid #26334d;
+    border: 1px solid #2a3855;
     border-radius: 14px;
     margin-bottom: 10px;
 }
 
-hr {
-    border-color: #26334d;
+div[data-testid="stExpander"] summary,
+div[data-testid="stExpander"] summary * {
+    color: #f4f7ff !important;
 }
 
+hr {
+    border-color: #293650 !important;
+}
+
+/* Hero banner */
+
 .hero-card {
-    background: linear-gradient(
-        120deg,
-        rgba(91, 33, 182, 0.45),
-        rgba(15, 118, 145, 0.22)
-    );
-    border: 1px solid #6470a050;
-    border-radius: 24px;
-    padding: 30px;
-    margin-bottom: 24px;
-    box-shadow: 0 15px 50px #00000025;
+    background:
+        linear-gradient(120deg, #5b21b65c, #0f766e35),
+        #10182b;
+    border: 1px solid #8997d24d;
+    border-radius: 26px;
+    padding: 34px;
+    margin-bottom: 26px;
+    box-shadow: 0 18px 55px #00000038;
 }
 
 .hero-eyebrow {
@@ -144,26 +279,33 @@ hr {
     font-weight: 800;
     line-height: 1.15;
     margin: 12px 0;
-    color: white;
+    color: #ffffff !important;
 }
 
 .hero-description {
     font-size: 16px;
-    color: #c5d2e8;
+    line-height: 1.7;
+    color: #c5d2e8 !important;
     max-width: 680px;
 }
 
 @media (max-width: 700px) {
     .block-container {
-        padding: 1rem;
+        padding: 1rem 0.8rem 2rem;
     }
 
     .hero-card {
-        padding: 21px;
+        padding: 22px;
+        border-radius: 20px;
+    }
+
+    [data-testid="stRadio"] [role="radiogroup"] label {
+        padding: 11px 12px !important;
     }
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 st.markdown("""
 <div class="hero-card">
@@ -182,7 +324,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ==================== DEMO QUESTIONS ====================
+# =====================================================
+# DEMO QUESTIONS
+# =====================================================
 
 DEMO_QUESTIONS = [
     {
@@ -282,7 +426,9 @@ DEMO_QUESTIONS = [
 ]
 
 
-# ==================== API KEY ====================
+# =====================================================
+# API KEY AND AI QUESTION GENERATOR
+# =====================================================
 
 def get_api_key():
     api_key = os.getenv("OPENAI_API_KEY", "").strip()
@@ -291,14 +437,10 @@ def get_api_key():
         return api_key
 
     try:
-        return str(
-            st.secrets.get("OPENAI_API_KEY", "")
-        ).strip()
+        return str(st.secrets.get("OPENAI_API_KEY", "")).strip()
     except Exception:
         return ""
 
-
-# ==================== AI QUESTION GENERATOR ====================
 
 def generate_questions(
     topic,
@@ -312,8 +454,8 @@ def generate_questions(
 
     if not api_key:
         raise ValueError(
-            "OpenAI API key is missing. Select Demo mode "
-            "or configure OPENAI_API_KEY."
+            "OpenAI API key is missing. Select Demo mode or configure "
+            "OPENAI_API_KEY."
         )
 
     if OpenAI is None:
@@ -346,7 +488,7 @@ Requirements:
 - Questions must be relevant, clear, and unambiguous.
 - Return a JSON object with a top-level "questions" array.
 
-Structure:
+JSON structure:
 {{
   "questions": [
     {{
@@ -370,10 +512,7 @@ Structure:
                     "Return valid JSON and follow all requirements."
                 ),
             },
-            {
-                "role": "user",
-                "content": prompt,
-            },
+            {"role": "user", "content": prompt},
         ],
         response_format={"type": "json_object"},
         temperature=0.3,
@@ -382,17 +521,13 @@ Structure:
     content = response.choices[0].message.content
 
     if not content:
-        raise ValueError(
-            "The AI returned an empty response. Please try again."
-        )
+        raise ValueError("The AI returned an empty response. Try again.")
 
     data = json.loads(content)
     raw_questions = data.get("questions", [])
 
     if not isinstance(raw_questions, list):
-        raise ValueError(
-            "The AI did not return a valid question list."
-        )
+        raise ValueError("The AI did not return a valid question list.")
 
     valid_questions = []
 
@@ -447,7 +582,9 @@ Structure:
     return valid_questions[:count]
 
 
-# ==================== RESET QUIZ ====================
+# =====================================================
+# RESET QUIZ
+# =====================================================
 
 def reset_quiz():
     keys_to_remove = [
@@ -469,10 +606,13 @@ def reset_quiz():
             st.session_state.pop(key, None)
 
 
-# ==================== SIDEBAR ====================
+# =====================================================
+# SIDEBAR SETTINGS
+# =====================================================
 
 with st.sidebar:
     st.markdown("## ⚙️ Quiz Studio")
+    st.caption("Personalize your learning challenge.")
 
     mode = st.selectbox(
         "Question source",
@@ -521,20 +661,19 @@ with st.sidebar:
 
     if mode == "AI mode":
         st.caption(
-            "AI mode requires a valid OpenAI API key "
-            "and internet access."
+            "AI mode requires an OpenAI API key and internet access."
         )
     else:
         st.caption(
-            "Demo mode works without an API key and uses "
-            "built-in sample questions."
+            "Demo mode works without an API key and uses sample questions."
         )
 
 
-# ==================== CREATE QUIZ ====================
+# =====================================================
+# CREATE QUIZ
+# =====================================================
 
 if "questions" not in st.session_state:
-
     st.markdown("### 🚀 Build your next challenge")
 
     st.write(
@@ -543,7 +682,6 @@ if "questions" not in st.session_state:
     )
 
     col1, col2, col3 = st.columns(3)
-
     col1.metric("Question styles", "5")
     col2.metric("Difficulty levels", "5")
     col3.metric("Questions per quiz", "5–20")
@@ -561,7 +699,6 @@ if "questions" not in st.session_state:
         else:
             try:
                 with st.spinner("Preparing your quiz..."):
-
                     if mode == "AI mode":
                         questions = generate_questions(
                             selected_topic,
@@ -571,7 +708,6 @@ if "questions" not in st.session_state:
                             language,
                             notes.strip(),
                         )
-
                     else:
                         pool = DEMO_QUESTIONS[:]
 
@@ -604,22 +740,21 @@ if "questions" not in st.session_state:
 
     with st.expander("ℹ️ About QuizQuest AI"):
         st.write(
-            "AI mode creates questions for your selected topic. "
-            "Demo mode uses built-in sample questions, which may "
-            "not match the topic you enter."
+            "AI mode generates questions about your chosen topic. "
+            "Demo mode uses built-in sample questions, which may not "
+            "match the topic you enter."
         )
 
 
-# ==================== TAKE QUIZ ====================
+# =====================================================
+# TAKE QUIZ
+# =====================================================
 
 else:
     questions = st.session_state.questions
 
     if not st.session_state.submitted:
-
-        st.markdown(
-            f"### 📚 {st.session_state.quiz_topic}"
-        )
+        st.markdown(f"### 📚 {st.session_state.quiz_topic}")
 
         st.caption(
             f"{len(questions)} questions  •  "
@@ -633,11 +768,9 @@ else:
         )
 
         with st.form("quiz_answer_form"):
-
             selected_answers = {}
 
             for i, question in enumerate(questions):
-
                 st.markdown(
                     f"#### Question {i + 1} of {len(questions)}"
                 )
@@ -670,7 +803,9 @@ else:
             st.rerun()
 
 
-    # ==================== RESULTS ====================
+    # =================================================
+    # RESULTS
+    # =================================================
 
     else:
         answers = st.session_state.answers
@@ -686,11 +821,9 @@ else:
         elapsed = st.session_state.get("quiz_elapsed", 0)
 
         st.balloons()
-
         st.markdown("### 🏆 Your results")
 
         c1, c2, c3 = st.columns(3)
-
         c1.metric("Final score", f"{score}/{total}")
         c2.metric("Accuracy", f"{percentage}%")
         c3.metric(
@@ -752,9 +885,7 @@ else:
                     "question": q["question"],
                     "your_answer": answers.get(str(i)),
                     "correct_answer": q["answer"],
-                    "is_correct": (
-                        answers.get(str(i)) == q["answer"]
-                    ),
+                    "is_correct": answers.get(str(i)) == q["answer"],
                     "explanation": q["explanation"],
                 }
                 for i, q in enumerate(questions)
@@ -782,7 +913,9 @@ else:
             st.rerun()
 
 
-# ==================== FOOTER ====================
+# =====================================================
+# FOOTER
+# =====================================================
 
 st.divider()
 
